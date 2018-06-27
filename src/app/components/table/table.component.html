@@ -1,0 +1,33 @@
+<h4>
+  Satser
+  <span class="small" *ngIf="!table.columnHasDivPeriods()">{{txt.getIntervalPrYearTxt(table.getIntervalsPrYear())}}</span>
+  <span class="small" *ngIf="table.hasExceptionelCosts()">{{txt.getGeneral('notallCost')}}</span>
+</h4>
+<table class="sats" [class.smallTable]="table.isSmallTable()">
+  <tr>
+    <th>{{txt.getGeneral(table.determineInput()) | capitalLetter}}
+      <span *ngIf="table.determineInput() === 'vaegt'" class="small">
+        {{txt.getGeneral(table.getWightType())}}
+      </span>
+    </th>
+    <th *ngFor="let header of getColumnType()">
+      {{txt.getGeneral(common.getIdforHeader(header)) | capitalLetter}}
+    </th>
+
+    <th *ngIf="table.columnHasDivPeriods()">Opkrævningsperiode</th>
+  </tr>
+
+  <tr *ngFor="let column of getTableStructure(); let i = index">
+    <td>
+      <app-interval [interval]="printInterval(i)"></app-interval>
+    </td>
+
+    <td *ngFor="let cell of column">
+      {{printCell(cell)}}
+    </td>
+    <ng-container *ngIf="table.columnHasDivPeriods()">
+      <td>pr. {{printPeriod(table.getDivPeriod(i))}}</td>
+    </ng-container>
+  </tr>
+
+</table>

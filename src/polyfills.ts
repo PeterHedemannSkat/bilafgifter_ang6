@@ -19,26 +19,26 @@
  */
 
 /** IE9, IE10 and IE11 requires all of the following polyfills. **/
-// import 'core-js/es6/symbol';
-// import 'core-js/es6/object';
-// import 'core-js/es6/function';
-// import 'core-js/es6/parse-int';
-// import 'core-js/es6/parse-float';
-// import 'core-js/es6/number';
-// import 'core-js/es6/math';
-// import 'core-js/es6/string';
-// import 'core-js/es6/date';
-// import 'core-js/es6/array';
-// import 'core-js/es6/regexp';
-// import 'core-js/es6/map';
-// import 'core-js/es6/weak-map';
-// import 'core-js/es6/set';
+ import 'core-js/es6/symbol';
+ import 'core-js/es6/object';
+ import 'core-js/es6/function';
+ import 'core-js/es6/parse-int';
+ import 'core-js/es6/parse-float';
+ import 'core-js/es6/number';
+ import 'core-js/es6/math';
+ import 'core-js/es6/string';
+ import 'core-js/es6/date';
+ import 'core-js/es6/array';
+ import 'core-js/es6/regexp';
+ import 'core-js/es6/map';
+ import 'core-js/es6/weak-map';
+ import 'core-js/es6/set';
 
 /** IE10 and IE11 requires the following for NgClass support on SVG elements */
 // import 'classlist.js';  // Run `npm install --save classlist.js`.
 
 /** IE10 and IE11 requires the following for the Reflect API. */
-// import 'core-js/es6/reflect';
+ import 'core-js/es6/reflect';
 
 
 /** Evergreen browsers require these. **/
@@ -47,9 +47,8 @@ import 'core-js/es7/reflect';
 
 
 /**
- * Web Animations `@angular/platform-browser/animations`
- * Only required if AnimationBuilder is used within the application and using IE/Edge or Safari.
- * Standard animation support in Angular DOES NOT require any polyfills (as of Angular 6.0).
+ * Required to support Web Animations `@angular/platform-browser/animations`.
+ * Needed for: All but Chrome, Firefox and Opera. http://caniuse.com/#feat=web-animation
  **/
 // import 'web-animations-js';  // Run `npm install --save web-animations-js`.
 
@@ -71,7 +70,47 @@ import 'core-js/es7/reflect';
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import 'zone.js/dist/zone';  // Included with Angular CLI.
+
+
+
+ //import 'rxjs/Observable';
+//import { Observable } from "rxjs";
+
+/*
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/share';
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/reduce';
+import 'rxjs/add/observable/merge';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/toArray';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/do';
+*/
+
+
+ import 'zone.js/dist/zone';  // Included with Angular CLI.
+
+
+ const reduce = Function.bind.call(Function.call, Array.prototype.reduce);
+ const isEnumerable = Function.bind.call(Function.call, Object.prototype.propertyIsEnumerable);
+ const concat = Function.bind.call(Function.call, Array.prototype.concat);
+ const keys = Reflect.ownKeys;
+ 
+ if (!Object.values) {
+   Object.values = function values(O) {
+     return reduce(keys(O), (v, k) => concat(v, typeof k === 'string' && isEnumerable(O, k) ? [O[k]] : []), []);
+   };
+ }
+ 
+ if (!Object.entries) {
+   Object.entries = function entries(O) {
+     return reduce(keys(O), (e, k) => concat(e, typeof k === 'string' && isEnumerable(O, k) ? [[k, O[k]]] : []), []);
+   };
+ }
 
 
 

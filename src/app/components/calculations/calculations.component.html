@@ -1,0 +1,69 @@
+<label for="value">Indtast {{txt.getGeneral(table.determineInput())}}
+  <span *ngIf="table.determineInput() === 'vaegt'" class="small">
+    {{txt.getGeneral(table.getWightType())}}
+  </span>
+</label>
+<input type="tel" class="form-control" [(ngModel)]="table.value" id="value">
+
+
+<ng-container *ngIf="table.value && table.value.length > 0 && table.getRowIndex() > -1">
+
+  <table class="calc-structure">
+
+    <tr>
+      <th>{{printTableHeading() | capitalLetter}}</th>
+    </tr>
+
+    <ng-container *ngFor="let calc of prepareDataInterval()" class="grid-calc-wrapper">
+      <tr>
+        <td class="header-calc">{{txt.getGeneral(calc.id) | capitalLetter}}</td>
+        <td class="sum-calc">{{table.getValueofCell(calc.valueObj) | readableDigitFormat}} kr.</td>
+      </tr>
+      <tr *ngIf="calc.valueObj.regular === false">
+        <td>
+          <span class="first-part">
+            {{printClosestHundred(calc.valueObj.interval) | readableDigitFormat}} kg. (rundet op)
+            <span class="divisor"> </span> {{calc.valueObj.interval}}
+          </span>
+          <span class="multiplication"> </span>
+          <span class="second-part">
+            {{calc.valueObj.value | readableDigitFormat}} kr. </span>
+          = {{table.getValueofCell(calc.valueObj) | readableDigitFormat}} kr.
+        </td>
+      </tr>
+
+
+    </ng-container>
+
+
+  </table>
+
+  <ng-container *ngIf="table.getIntervalsPrYear() > 1">
+    <hr class="calc-divisor">
+
+    <table>
+      <tr>
+        <td>Samlet {{printTableHeading()}}
+
+        </td>
+        <td class="sum-calc end-sum">{{table.getTotalPrInterval() | readableDigitFormat}} kr.</td>
+      </tr>
+
+    </table>
+  </ng-container>
+
+
+
+
+
+  <table class="pr-year-table">
+
+    <tr>
+      <th>Samlet pr. år
+
+      </th>
+      <th class="sum-calc end-sum">{{table.getTotal() | readableDigitFormat}} kr.</th>
+    </tr>
+
+  </table>
+</ng-container>

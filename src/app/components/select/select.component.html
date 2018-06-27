@@ -1,0 +1,15 @@
+<h4>Spørgsmål</h4>
+
+<div *ngFor="let option of model.options" class="parameter">
+
+  <div class="form-group">
+    <label [for]="option.id">{{text.getLabel(option.id) | capitalLetter}}</label>
+
+    <select [(ngModel)]="option.value" (change)="common.selectchange(option.id)" [id]="option.id" class="form-control">
+      <option *ngFor="let optionSub of getUserOptions(option.options())" [value]="optionSub.value">
+        {{optionSub.txt | capitalLetter}}
+      </option>
+    </select>
+  </div>
+
+</div>
