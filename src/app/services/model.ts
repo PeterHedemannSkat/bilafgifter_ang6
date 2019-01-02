@@ -4,8 +4,8 @@ import { PeriodsService } from "./createPeriods";
 
 @Injectable()
 export class Model {
-  years = [2018, 2017];
-  year = 2018;
+  years = [2019, 2018, 2017];
+  year = 2019;
   parameter: any[] = [
     {
       id: "type",
@@ -222,7 +222,7 @@ export class Model {
       fn: () => {
         return (
           this.valueIs("weightTruck") === "moreThan12t" &&
-          this.valueIs("typeLargeTruck") === "vogntog" && 
+          this.valueIs("typeLargeTruck") === "vogntog" &&
           this.valueIs("hej") === "hej"
         );
       },
@@ -365,7 +365,7 @@ export class Model {
           if (index === lastIndex) {
             periods.push({ from: el, to: new Date(year, 11, 31) });
           } else if (nextElementIsNotTheLast) {
-            periods.push({ from: el, to: splitDates[index + 1] });
+            periods.push({ from: el, to: this.subDate(splitDates[index + 1]) });
           }
         });
 

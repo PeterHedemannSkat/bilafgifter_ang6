@@ -168,7 +168,7 @@ export class TextService {
       fn: (data: periodOptions[]) => {
         return data.map(el => {
           if (el.fromYear === null && el.split === null) {
-            return `tidligere end ${el.toYear}`;
+            return `før ${el.toYear + 1}`;
           }
 
           if (el.toYear === null && el.split === null) {

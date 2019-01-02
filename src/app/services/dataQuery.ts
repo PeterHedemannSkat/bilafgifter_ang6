@@ -252,45 +252,39 @@ export class DataQueryService {
 
     if (this.tableIds.length === 0) return;
 
-    this.formattedRows = this.tableIds.map(el => this.rawData(el)).map(el => {
-      const copyArr: any[] = el.data.slice().map(el_ => Object.assign({}, el_)),
-        copy = Object.assign({}, el);
+    this.formattedRows = this.tableIds
+      .map(el => this.rawData(el))
+      .map(el => {
+        const copyArr: any[] = el.data
+            .slice()
+            .map(el_ => Object.assign({}, el_)),
+          copy = Object.assign({}, el);
 
-      copy.data = copyArr;
+        copy.data = copyArr;
 
-      if (el.id.match(/nyeregler/) && el.id.match(/forbrugsafgift/)) {
-        const year = this.model.year,
-          power = year - 2017,
-          boost = Math.pow(1.055, power);
+        if (this.model.isVeteranCar()) {
+          copy.data.forEach(el_ => {
+            el_.value = Math.floor(el_.value / 4);
+          });
+        } else if (this.model.valueIs('weightTruck') === 'moreThan12t') {
+          const el =
+            this.model.valueIs('affjedringstype') === 'luft'
+              ? copy.data.length - 1
+              : 0;
 
-        copy.data.forEach(el_ => {
-          el_.value = this.roundClosest(el_.value * boost, 10);
-        });
-      }
+          copy.data.splice(el, 1);
+        } else if (this.model.valueIs('type') === 'taxi') {
+          const isRegular = !copy.id.match(/udligning/);
 
-      if (this.model.isVeteranCar()) {
-        copy.data.forEach(el_ => {
-          el_.value = Math.floor(el_.value / 4);
-        });
-      } else if (this.model.valueIs('weightTruck') === 'moreThan12t') {
-        const el =
-          this.model.valueIs('affjedringstype') === 'luft'
-            ? copy.data.length - 1
-            : 0;
-
-        copy.data.splice(el, 1);
-      } else if (this.model.valueIs('type') === 'taxi') {
-        const isRegular = !copy.id.match(/udligning/);
-
-        if (isRegular) {
-          copy.data.forEach(el_ => (el_.value = 0));
-        } else if (this.model.getAfgiftsType('ejerafgift')) {
-          copy.data.forEach(el_ => (el_.value = el_.value * 2));
+          if (isRegular) {
+            copy.data.forEach(el_ => (el_.value = 0));
+          } else if (this.model.getAfgiftsType('ejerafgift')) {
+            copy.data.forEach(el_ => (el_.value = el_.value * 2));
+          }
         }
-      } 
 
-      return copy;
-    });
+        return copy;
+      });
 
     this.modifyTablesSpecialCase();
     this.interval = this.intervalService.getInterval(this.formattedRows);
@@ -335,14 +329,12 @@ export class DataQueryService {
       ? 'websrv/jsong.ashx?Id=15016'
       : 'app/data';
 
-    this.http
-      .get(url)
-      .subscribe((el) => {
-        this.data = el.json();
-        if (this.model.allParametersSet()) {
-          this.setNewTablesOnChange();
-        }
-      });
+    this.http.get(url).subscribe(el => {
+      this.data = el.json();
+      if (this.model.allParametersSet()) {
+        this.setNewTablesOnChange();
+      }
+    });
   }
 
   getIntervalsPrYear() {
@@ -471,7 +463,7 @@ export class DataQueryService {
     if (!cell) return;
     if (cell.regular) return cell.value;
 
-    return this.roundClosest(val, cell.interval) / cell.interval * cell.value;
+    return (this.roundClosest(val, cell.interval) / cell.interval) * cell.value;
   }
 
   getPartikelFilterAfgift() {
@@ -484,10 +476,13 @@ export class DataQueryService {
 
     const data = this.formatData('partikelFilterAfgift');
 
-    if ((vehicle === 'car' || vehicle === 'taxi') || (vehicle === 'van' && this.model.getAfgiftsType('ejerafgift'))) {
+    if (
+      vehicle === 'car' ||
+      vehicle === 'taxi' ||
+      (vehicle === 'van' && this.model.getAfgiftsType('ejerafgift'))
+    ) {
       return data[2];
     } else {
-
       const lookup = {
         '2016': 0,
         '2017': data[0],
@@ -546,18 +541,23 @@ export class DataQueryService {
     const yeardata_ = this.formatData('privatAnvendelsesAfgift');
 
     const limitPeriod_1 = 6,
-    limitPeriod_2 = 8;
+      limitPeriod_2 = 8;
 
-    const isPeriod1 = mainPeriod < limitPeriod_1 || (mainPeriod === limitPeriod_1  && subPeriod === 2),
-      isPeriod2 = mainPeriod === (limitPeriod_1 + 1)
-      || (mainPeriod === limitPeriod_1 && subPeriod === 1)
-      || (mainPeriod === limitPeriod_2 && subPeriod === 2);
+    const isPeriod1 =
+        mainPeriod < limitPeriod_1 ||
+        (mainPeriod === limitPeriod_1 && subPeriod === 2),
+      isPeriod2 =
+        mainPeriod === limitPeriod_1 + 1 ||
+        (mainPeriod === limitPeriod_1 && subPeriod === 1) ||
+        (mainPeriod === limitPeriod_2 && subPeriod === 2);
 
     const theheavy =
       mainPeriod > 4 || (mainPeriod === 4 && subPeriod === 1)
-        ? Number(this.value) > (mainPeriod < 6 || (mainPeriod === 6 && subPeriod === 2) ? 3000 : 2000)
+        ? Number(this.value) >
+          (mainPeriod < 6 || (mainPeriod === 6 && subPeriod === 2)
+            ? 3000
+            : 2000)
         : this.model.valueIs('vaegtVareBil') === 'moreThan3t';
-
 
     if (isPeriod1) {
       const key = theheavy ? 2 : 1;
