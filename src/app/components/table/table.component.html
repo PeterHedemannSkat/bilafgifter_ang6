@@ -1,7 +1,11 @@
 <h4>
   Satser
-  <span class="small" *ngIf="!table.columnHasDivPeriods()">{{txt.getIntervalPrYearTxt(table.getIntervalsPrYear())}}</span>
-  <span class="small" *ngIf="table.hasExceptionelCosts()">{{txt.getGeneral('notallCost')}}</span>
+  <span *ngIf="!table.columnHasDivPeriods()">{{
+    txt.getIntervalPrYearTxt(table.getIntervalsPrYear())
+  }}</span>
+  <span *ngIf="table.hasExceptionelCosts()">{{
+    txt.getGeneral("notallCost")
+  }}</span>
 </h4>
 <table class="sats" [class.smallTable]="table.isSmallTable()">
   <tr>
