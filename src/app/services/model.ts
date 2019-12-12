@@ -4,7 +4,7 @@ import { PeriodsService } from "./createPeriods";
 
 @Injectable()
 export class Model {
-  years = [2019, 2018, 2017];
+  years = [2020, 2019, 2018, 2017];
   year = 2019;
   parameter: any[] = [
     {
@@ -398,7 +398,11 @@ export class Model {
       period = Number(this.valueIs("period")),
       subPeriod = Number(this.valueIs("subperiod")),
       isTaxiOrCar = this.valuePropIsEither("type", ["car", "taxi"]),
-      data = [[1, "*"], [2, "*"], [3, "*"]];
+      data = [
+        [1, "*"],
+        [2, "*"],
+        [3, "*"]
+      ];
 
     if (isTaxiOrCar) {
       data.push([4, 3]);
