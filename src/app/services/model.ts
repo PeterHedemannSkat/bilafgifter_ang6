@@ -5,7 +5,7 @@ import { PeriodsService } from "./createPeriods";
 @Injectable()
 export class Model {
   years = [2020, 2019, 2018, 2017];
-  year = 2019;
+  year = 2020;
   parameter: any[] = [
     {
       id: "type",

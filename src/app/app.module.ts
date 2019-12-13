@@ -34,8 +34,8 @@ import { CapitalLetter } from "./commonUtil/capitalLetter";
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
-    InMemoryWebApiModule.forRoot(ExternalData)
+    HttpModule //,
+    //InMemoryWebApiModule.forRoot(ExternalData)
   ],
   providers: [
     MathCalc,
