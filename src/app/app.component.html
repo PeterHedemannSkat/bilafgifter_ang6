@@ -45,7 +45,7 @@
         <div *ngIf="table.formattedRows && table.formattedRows.length > 0" class="table-result-area well">
 
           <div *ngIf="parameter.allParametersSet()" class="calculation-area">
-            <h4>Beregn årlig afgift</h4>
+            <h3 class="h4">Beregn årlig afgift</h3>
             <app-calculations></app-calculations>
           </div>
           <p *ngIf="parameter.allParametersSet()">Når et køretøj er fyldt 35 år, nedsættes afgiften til 25 procent.</p>
