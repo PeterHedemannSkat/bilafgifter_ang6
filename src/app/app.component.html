@@ -12,11 +12,16 @@
       </div>
 
       <label for="year">Vælg år</label>
-      <select [(ngModel)]="parameter.year" id="year" (change)="common.updateModel()">
-        <option *ngFor="let year of parameter.years" [value]="year">{{year}}</option>
+      <select
+        [(ngModel)]="parameter.year"
+        id="year"
+        (change)="common.updateModel()"
+      >
+        <option *ngFor="let year of parameter.years" [value]="year">
+          {{ year !== 2021 ? year : "15. februar 2021" }}
+        </option>
       </select>
     </div>
-
   </div>
 
   <ng-container *ngIf="table.data">
