@@ -1,14 +1,15 @@
 <div class="app-container">
   <!--<h2>Bilafgifter</h2>dddd-->
   <div class="row">
-
-
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div *ngIf="showDifferences()">
-
         <label for="dif">Vis satser efter 1. juli 2018</label>
-        <input type="checkbox" id="dif" [(ngModel)]="table.dif" (change)="common.updateModel()">
-
+        <input
+          type="checkbox"
+          id="dif"
+          [(ngModel)]="table.dif"
+          (change)="common.updateModel()"
+        />
       </div>
 
       <label for="year">Vælg år</label>
@@ -18,17 +19,19 @@
         (change)="common.updateModel()"
       >
         <option *ngFor="let year of parameter.years" [value]="year">
-          {{ year !== 2021 ? year : "15. februar 2021" }}
+          {{ year !== 2021 ? year : "2021 (fra d. 15. februar)" }}
         </option>
       </select>
     </div>
   </div>
 
   <ng-container *ngIf="table.data">
-
     <div class="row">
       <ng-container *ngIf="common.specialTxtCases().length > 0">
-        <div class="col-xs-12" [innerHtml]="text.getGeneral(common.specialTxtCases())"></div>
+        <div
+          class="col-xs-12"
+          [innerHtml]="text.getGeneral(common.specialTxtCases())"
+        ></div>
       </ng-container>
     </div>
 
@@ -39,27 +42,26 @@
         </div>
       </div>
 
-
       <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
-
-        <div *ngIf="table.formattedRows && table.formattedRows.length > 0" class="table-result-area well">
-
+        <div
+          *ngIf="table.formattedRows && table.formattedRows.length > 0"
+          class="table-result-area well"
+        >
           <div *ngIf="parameter.allParametersSet()" class="calculation-area">
             <h3 class="h4">Beregn årlig afgift</h3>
             <app-calculations></app-calculations>
           </div>
-          <p *ngIf="parameter.allParametersSet()">Når et køretøj er fyldt 35 år, nedsættes afgiften til 25 procent.</p>
+          <p *ngIf="parameter.allParametersSet()">
+            Når et køretøj er fyldt 35 år, nedsættes afgiften til 25 procent.
+          </p>
 
           <app-table *ngIf="parameter.allParametersSet()"></app-table>
 
-          <div *ngIf="!parameter.allParametersSet()">Du mangler at udfylde noget</div>
+          <div *ngIf="!parameter.allParametersSet()">
+            Du mangler at udfylde noget
+          </div>
         </div>
-
-
       </div>
     </div>
-
-
-
   </ng-container>
 </div>
