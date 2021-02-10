@@ -19,7 +19,7 @@
         (change)="common.updateModel()"
       >
         <option *ngFor="let year of parameter.years" [value]="year">
-          {{ year !== 2021 ? year : "2021 (fra d. 15. februar)" }}
+          {{ this.optionText(year) }}
         </option>
       </select>
     </div>
