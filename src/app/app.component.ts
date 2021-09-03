@@ -6,7 +6,7 @@ import { optionsTxt } from "./commonUtil/interfaces";
 import { DataQueryService } from "./services/dataQuery";
 import { CommonsService } from "./services/common";
 import { IntervalService } from "./services/intervalService";
-import { PeriodsService } from './services/createPeriods';
+import { PeriodsService } from "./services/createPeriods";
 
 @Component({
   selector: "app-root",
@@ -43,10 +43,20 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.text.initTxtSelect();
     this.table.setAllData();
-
   }
 
   showDifferences() {
     return true;
+  }
+
+  optionText(year: number) {
+    switch (year) {
+      case 2020:
+        return "2020 og til 14. februar 2021";
+      case 2021:
+        return "2021 – fra 15. februar";
+      default:
+        return year.toString();
+    }
   }
 }
